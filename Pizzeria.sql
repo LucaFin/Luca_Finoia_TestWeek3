@@ -158,6 +158,8 @@ execute InserimentoIngredientePizza 'Zeus','mozzarella';
 execute InserimentoIngredientePizza 'Zeus','bresaola';
 execute InserimentoIngredientePizza 'Zeus','rucola';
 
+execute InserimentoIngredientePizza 'Zeus','pomodoro';
+
 
 
 --3. Aggiornamento del prezzo di una pizza (parametri: nome pizza e nuovo prezzo)
@@ -183,7 +185,6 @@ select @codiceIngrediente=CodiceIngrediente from Ingrediente
 where Nome=@nomeIngrediente
 delete from PizzaIngrediente where codicePizza=@codicePizza and codiceIngrediente=@codiceIngrediente
 go
-
 --5. Incremento del 10% del prezzo delle pizze contenenti un ingrediente (parametro: nome ingrediente)
 
 create procedure tassaIngrediente
@@ -277,6 +278,9 @@ end
 
 select nome,dbo.numeroIngredienti(nome) as [Numero Ingredienti] from Pizza
 
+
+-- funzione che data una pizza mi restituisce la sua lista di ingredienti
+
 create function listaIngredienti(@nomePizza varchar(20))
 returns varchar(400)
 as
@@ -293,10 +297,12 @@ end
 
 select dbo.listaIngredienti('Margherita') as [Ingredienti]
 
+
+-- vista che contiene il menu (pizza, prezzo, lista ingredienti)
+
 create view menu as 
 (select p.Nome, p.Prezzo, 
 		(dbo.listaIngredienti(p.Nome)) as [Ingredienti]
 from Pizza p)
 drop view menu;
 select * from menu;
-select * from PizzaIngrediente;
