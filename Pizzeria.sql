@@ -9,15 +9,15 @@ drop table if exists Ingrediente
 
 create table Pizza(
 CodicePizza int primary key identity(1,1),
-Nome varchar(20) unique,
-Prezzo decimal(4,2) check (Prezzo>0)
+Nome varchar(20) not null unique,
+Prezzo decimal(4,2) not null check (Prezzo>0)
 );
 
 create table Ingrediente(
 CodiceIngrediente int primary key identity(1,1),
-Nome varchar(20) unique,
-Costo decimal(4,2) check (Costo>0),
-QuantitaInMagazino int check(QuantitaInMagazino>=0)
+Nome varchar(20) not null unique,
+Costo decimal(4,2) not null check (Costo>0),
+QuantitaInMagazino int not null check(QuantitaInMagazino>=0)
 );
 create table PizzaIngrediente(
 CodicePizza int constraint FK_Pizza foreign key references Pizza(CodicePizza),
@@ -75,7 +75,7 @@ where Prezzo>6
 --2. Estrarre la pizza/le pizze più costosa/e
 
 select * from Pizza
-where Prezzo=(select Max(Prezzo) from Pizza group by Prezzo)
+where Prezzo=(select Max(Prezzo) from Pizza)
 
 --3. Estrarre le pizze «bianche»
 
